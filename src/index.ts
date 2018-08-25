@@ -1,12 +1,11 @@
 import * as winston from "winston";
 import app from "./App";
+import config from "./config/Config";
 
-const port = process.env.SERVER_PORT || 3000;
-
-app.listen(port, (err) => {
+app.listen(config.port, (err) => {
     if (err) {
         return winston.error(err);
     }
 
-    return winston.info(`Server is listening on ${port}`);
+    return winston.info(`Server is listening on ${config.port}`);
 });
