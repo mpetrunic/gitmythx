@@ -14,7 +14,7 @@
     "revert-all": "sequelize --config sequelizecli.js db:migrate:undo:all",
     "migrate": "sequelize --config sequelizecli.js db:migrate",
     "prebuild": "npm run clean && npm run init",
-    "build": "tsc --outDir dist",
+    "build": "tsc --sourceMap false --outDir dist",
     "compile": "tsc",
     "pretest": "npm run compile && npm run lint",
     "test": "tape \"test/**/*.js\" | tap-spec",

@@ -1,0 +1,16 @@
+version: "3"
+services:
+  backend:
+    build: .
+    command: sh -c "yarn run dev"
+    image: nodejs-ts-starter:${IMAGE_TAG:-latest}
+    container_name: "${BACKEND_CONTAINER_NAME:-nodejs-backend}"
+    volumes:
+          - .:/usr/app
+          - node_modules:/usr/app/node_modules
+    ports:
+          - "${BACKEND_LOCAL_PORT:-3000}:${SERVER_PORT:-3000}"
+          - "${DEBUG_PORT:-56745}:56745"
+volumes:
+  node_modules:
+
