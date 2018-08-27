@@ -1,4 +1,6 @@
 import * as express from "express";
+import * as morgan from "morgan";
+import {morganLogger} from "./services/Logger";
 
 class App {
 
@@ -6,6 +8,7 @@ class App {
 
     constructor() {
         this.server = express();
+        this.server.use(morgan("short", { stream: morganLogger }));
         this.addRoutes();
     }
 

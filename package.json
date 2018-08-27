@@ -32,7 +32,7 @@
     "nodemon": "^1.17.4",
     "sequelize": "^4.38.0",
     "umzug": "^2.1.0",
-    "winston": "^2.4.4"
+    "winston": "^3.0.0"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
