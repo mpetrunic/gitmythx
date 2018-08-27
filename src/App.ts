@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as morgan from "morgan";
-import {morganLogger} from "./services/Logger";
+import api from "./Routes/Api";
+import {morganLogger} from "./Services/Logger";
 
 class App {
 
@@ -19,6 +20,7 @@ class App {
                 message: "Welcome stranger!",
             });
         });
+        this.server.use("/api", api);
         this.server.use("/", router);
     }
 }
