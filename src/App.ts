@@ -9,8 +9,10 @@ class App {
 
     constructor() {
         this.server = express();
+        // add before route middleware's here
         this.server.use(morgan("short", { stream: morganLogger }));
         this.addRoutes();
+        // add after route middleware's here
     }
 
     private addRoutes(): void {

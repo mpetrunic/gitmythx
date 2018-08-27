@@ -241,4 +241,6 @@ src/**/*.js.map
 test/**/*.js
 test/**/*.js.map
 
+.postgres
+
 # End of https://www.gitignore.io/api/node,macos,linux,windows,solidity,jetbrains+all

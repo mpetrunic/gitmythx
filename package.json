@@ -10,9 +10,9 @@
   "scripts": {
     "init": "mkdir dist",
     "clean": "rm -rf dist",
-    "revert": "sequelize --config sequelizecli.js db:migrate:undo",
-    "revert-all": "sequelize --config sequelizecli.js db:migrate:undo:all",
-    "migrate": "sequelize --config sequelizecli.js db:migrate",
+    "revert": "npm run compile && sequelize --config sequelizecli.js db:migrate:undo",
+    "revert-all": "npm run compile && sequelize --config sequelizecli.js db:migrate:undo:all",
+    "migrate": "npm run compile && sequelize --config sequelizecli.js db:migrate",
     "prebuild": "npm run clean && npm run init",
     "build": "tsc --sourceMap false --outDir dist",
     "compile": "tsc",
@@ -30,6 +30,7 @@
     "joi": "^13.5.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4",
+    "pg": "^7.4.3",
     "sequelize": "^4.38.0",
     "umzug": "^2.1.0",
     "winston": "^3.0.0"

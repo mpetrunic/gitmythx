@@ -6,7 +6,7 @@ WORKDIR /usr/app
 COPY yarn.lock .
 COPY package.json .
 
-RUN yarn install --frozen-lockfile && yarn cache clean
+RUN yarn install --frozen-lockfile && yarn cache clean && apk del dependencies
 
 COPY . .
 
