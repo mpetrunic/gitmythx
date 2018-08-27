@@ -1,27 +1,24 @@
 import * as path from "path";
-import * as Sequelize from "sequelize";
+import {Sequelize} from "sequelize-typescript";
 import * as Umzug from "umzug";
 import config from "../Config/Config";
-import Models from "../Models";
 import logger from "../Services/Logger";
 
 class Database {
 
-    public sequelize: Sequelize.Sequelize;
-
-    public models: object = {};
+    public sequelize: Sequelize;
 
     private migrations: Umzug;
 
     constructor() {
-       this.sequelize = new Sequelize.Sequelize(
-            config.db.database,
-            config.db.user,
-            config.db.password,
+       this.sequelize = new Sequelize(
            {
+                database: config.db.database,
+                username: config.db.user,
+                password: config.db.password,
                 dialect: config.db.dialect,
                 host: config.db.host,
-                logging: logger.info,
+                logging: logger.debug,
                 native: false,
                 pool: {
                     acquire: 30000,
@@ -29,6 +26,7 @@ class Database {
                     max: 5,
                     min: 0,
                 },
+               modelPaths: [path.join(__dirname, "../Models")],
             });
        this.migrations = new Umzug({
             storage: "sequelize",
@@ -51,7 +49,6 @@ class Database {
     public async init(): Promise<Sequelize> {
         await this.waitForDb();
         await this.runMigrations();
-        this.initModels();
         return this.sequelize;
     }
 
@@ -77,18 +74,6 @@ class Database {
             await this.migrations.up();
             logger.info("Migrations executed successfully");
         }
-    }
-
-    private initModels() {
-        Object.keys(Models).forEach((prop) => {
-            this.models[prop] = Models[prop].init(this.sequelize, Sequelize);
-        });
-        // Run `.associate` if it exists,
-        // ie create relationships in the ORM
-        Object.keys(this.models)
-            .map((value) => Models[value])
-            .filter((model) => typeof model.associate === "function")
-            .forEach((model) => model.associate(this.models));
     }
 
     private sleep(ms) {

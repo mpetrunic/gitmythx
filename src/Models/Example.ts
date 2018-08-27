@@ -1,22 +1,14 @@
-import Sequelize from "sequelize";
+import {Column, DataType, Model, Table} from "sequelize-typescript";
 
-export default class Example extends Sequelize.Model {
-    public static init(sequelize, DataTypes) {
-        return super.init(
-            {
-                id: {
-                    type: DataTypes.INTEGER,
-                    primaryKey: true,
-                    autoIncrement: true,
-                },
-                help: {
-                    type: DataTypes.STRING,
-                },
-            },
-            { sequelize },
-        );
-    }
+@Table({
+    timestamps: true,
+    tableName: "Examples",
+})
+export default class Example extends Model<Example> {
 
-    public static associate(models) {
-    }
+    @Column({
+        type: DataType.STRING,
+    })
+    public help: string;
+
 }

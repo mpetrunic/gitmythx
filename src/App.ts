@@ -22,6 +22,11 @@ class App {
                 message: "Welcome stranger!",
             });
         });
+        router.get("/health", (req, res) => {
+            return res.json({
+                status: "OK",
+            });
+        });
         this.server.use("/api", api);
         this.server.use("/", router);
     }

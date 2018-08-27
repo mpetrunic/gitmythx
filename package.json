@@ -31,7 +31,9 @@
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4",
     "pg": "^7.4.3",
+    "reflect-metadata": "^0.1.12",
     "sequelize": "^4.38.0",
+    "sequelize-typescript": "^0.6.6",
     "umzug": "^2.1.0",
     "winston": "^3.0.0"
   },

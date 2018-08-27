@@ -3,7 +3,9 @@
     "target": "es6",
     "module": "commonjs",
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "files": [
     "./node_modules/@types/node/index.d.ts"
