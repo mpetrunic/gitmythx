@@ -6,7 +6,7 @@
     "Marin Petrunić <marin@nodefactory.io>",
     "Belma gutlić <belma@nodefactory.io"
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "init": "mkdir dist",
     "clean": "rm -rf dist",
