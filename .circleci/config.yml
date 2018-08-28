@@ -7,7 +7,7 @@ jobs:
       timezone: Europe/Zagreb
     steps:
     - checkout
-    - chown -R $USER:$USER ~/app
+    - run: chown -R $USER:$USER ~/app
     - restore_cache:
         keys:
         - v1-docker-{{ .Branch }}
