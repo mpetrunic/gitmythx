@@ -27,7 +27,7 @@ jobs:
           docker tag nodefactory/nodejs-ts-starter:${CIRCLE_SHA1} nodefactory/nodejs-ts-starter:latest
     - run:
         name: Run backend tests
-        command: docker-compose run -u node --no-deps -e NODE_ENV=test --rm backend npm run test
+        command: docker run nodefactory/nodejs-ts-starter:latest npm run test
     - run:
         name: Save docker layers cache
         command: |
