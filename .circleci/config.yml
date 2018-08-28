@@ -47,6 +47,7 @@ jobs:
       image: circleci/classic:latest
       timezone: Europe/Zagreb
     steps:
+    - checkout
     - attach_workspace:
         at: ./
     - run:
