@@ -1,4 +1,4 @@
-FROM nodejs-ts-starter:latest
+FROM nodefactory/nodejs-ts-starter:latest
 
 RUN yarn run build
 
