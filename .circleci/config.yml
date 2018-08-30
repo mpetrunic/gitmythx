@@ -38,8 +38,7 @@ jobs:
     - run:
         name: Run backend tests
         command: |
-
-          docker run --env-file .coveralls.env nodefactory/nodejs-ts-starter:latest npm run coverage && npm run coveralls
+          docker run --env-file .coveralls.env nodefactory/nodejs-ts-starter:${CIRCLE_SHA1} sh -c "npm run coverage && npm run coveralls"
     - run:
         name: Save docker layers cache
         command: |
