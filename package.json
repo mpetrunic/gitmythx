@@ -19,7 +19,7 @@
     "pretest": "npm run compile && npm run lint",
     "test": "tape \"test/**/*.js\" | tap-spec",
     "coverage": "nyc --all --include \"src/**/*.js\" npm test",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "coveralls": "nyc --reporter=text-lcov --reporter=lcov --all --include \"src/**/*.js\" npm test && nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint src/**/*.ts",
     "start": "npm run compile && node --inspect=0.0.0.0:56745 -r dotenv/config src/index.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js"
