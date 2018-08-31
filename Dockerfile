@@ -10,6 +10,8 @@ RUN yarn install --frozen-lockfile && yarn cache clean
 
 COPY . .
 
+RUN yarn run compile
+
 RUN chown -R node: .
 
 USER node
