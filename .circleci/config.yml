@@ -29,7 +29,9 @@ jobs:
         command: |
           touch .coveralls.env
           echo "COVERALLS_SERVICE_NAME=circle-ci" >> .coveralls.env
+          echo "CIRCLECI=true" >> .coveralls.env
           echo "COVERALLS_REPO_TOKEN=${COVERALLS_REPO_TOKEN}" >> .coveralls.env
+          echo "CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}" >> .coveralls.env
           echo "CIRCLE_BUILD_NUM=${CIRCLE_BUILD_NUM}" >> .coveralls.env
           echo "CI_PULL_REQUEST=${CI_PULL_REQUEST}" >> .coveralls.env
           echo "CIRCLE_SHA1=${CIRCLE_SHA1}" >> .coveralls.env
