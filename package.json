@@ -29,6 +29,7 @@
     "express": "^4.16.3",
     "express-async-errors": "^3.0.0",
     "express-validation": "^1.0.2",
+    "helmet": "^3.13.0",
     "joi": "^13.5.2",
     "morgan": "^1.9.0",
     "nodemon": "^1.17.4",

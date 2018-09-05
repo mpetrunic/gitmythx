@@ -1,5 +1,7 @@
+import * as bodyParser from "body-parser";
 import {Express, Request, Response, Router} from "express";
 import express = require("express");
+import * as helmet from "helmet";
 import * as morgan from "morgan";
 import api from "./Routes/Api";
 import {morganLogger} from "./Services/Logger";
@@ -12,6 +14,8 @@ class App {
         this.server = express();
         // add before route middleware's here
         this.server.use(morgan("short", { stream: morganLogger }));
+        this.server.use(bodyParser());
+        this.server.use(helmet());
         this.addRoutes();
         // add after route middleware's here
     }
