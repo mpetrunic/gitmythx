@@ -4,6 +4,7 @@
     "module": "commonjs",
     "sourceMap": true,
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },

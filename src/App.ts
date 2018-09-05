@@ -1,11 +1,12 @@
-import * as express from "express";
+import {Express, Request, Response, Router} from "express";
+import express = require("express");
 import * as morgan from "morgan";
 import api from "./Routes/Api";
 import {morganLogger} from "./Services/Logger";
 
 class App {
 
-    public server;
+    public server: Express;
 
     constructor() {
         this.server = express();
@@ -16,13 +17,13 @@ class App {
     }
 
     private addRoutes(): void {
-        const router = express.Router();
-        router.get("/", (req, res) => {
-            return res.json({
+        const router = Router();
+        router.get("/", (req: Request, res: Response) => {
+            res.json({
                 message: "Welcome stranger!",
             });
         });
-        router.get("/health", (req, res) => {
+        router.get("/health", (req: Request, res: Response) => {
             return res.json({
                 status: "OK",
             });

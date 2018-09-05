@@ -51,7 +51,7 @@ export class TestWithServer {
     constructor() {
         const that = this;
         const testWithServer = beforeEach(test, (t) => {
-            that.server = server.listen();
+            that.server = server.listen(12345);
             t.server = that.server;
             t.end();
         });
