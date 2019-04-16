@@ -16,7 +16,7 @@ services:
   db:
     image: postgres:9.6-alpine
     volumes:
-    - ./.postgres:/var/lib/postgresql/data
+    - postgres:/var/lib/postgresql/data
     container_name: "${DB_CONTAINER_NAME:-nodejs-db}"
     environment:
     - POSTGRES_USER=${DB_USER:-nodefactory}
@@ -26,4 +26,5 @@ services:
     - ${DB_LOCAL_PORT:-9999}:5432
 volumes:
   node_modules:
+  postgres:
 

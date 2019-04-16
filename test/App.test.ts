@@ -1,4 +1,4 @@
-import * as request from "supertest";
+import request from "supertest";
 import {IAssertWithServer, TestWithServer} from "./TestUtils";
 
 TestWithServer.test("Assert server is running", (t: IAssertWithServer) => {

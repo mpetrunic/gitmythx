@@ -1,6 +1,6 @@
-import * as path from "path";
+import path from "path";
 import {Sequelize} from "sequelize-typescript";
-import * as Umzug from "umzug";
+import Umzug from "umzug";
 import config from "../Config/Config";
 import logger from "../Services/Logger";
 
