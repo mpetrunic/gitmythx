@@ -1,10 +1,13 @@
+import cookieParser from "cookie-parser";
 import {Express, Request, Response, Router} from "express";
+import express = require("express");
 import helmet from "helmet";
 import morgan from "morgan";
+import * as path from "path";
 import api from "./Routes/Api";
 import github from "./Routes/GithubWebhook";
+import views from "./Routes/Views";
 import {morganLogger} from "./Services/Logger";
-import express = require("express");
 
 class App {
 
@@ -15,6 +18,10 @@ class App {
         // add before route middleware's here
         this.server.use(morgan("short", { stream: morganLogger }));
         this.server.use(helmet());
+        this.server.use(cookieParser());
+        this.server.set("view engine", "pug");
+        this.server.set("views", path.join(__dirname, "/Public/Views"));
+        this.server.use(express.static(__dirname + "/Public"));
         this.addRoutes();
         // add after route middleware's here
     }
@@ -33,6 +40,7 @@ class App {
         });
         this.server.use("/api", api);
         this.server.use("/github", github);
+        this.server.use("/", views);
         this.server.use("/", router);
     }
 }

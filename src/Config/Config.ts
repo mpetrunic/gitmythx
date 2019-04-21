@@ -4,6 +4,9 @@ const env = process.env;
  * Stores all env configurations and their default values.
  */
 const config = Object.freeze({
+    app: {
+        githubAuthUrl: process.env.HOSTNAME + "/oauth/github",
+    },
     db: {
         database: process.env.DB_NAME || "nodefactory",
         define: {
@@ -25,7 +28,7 @@ const config = Object.freeze({
         },
         app: {
             id: process.env.GITHUB_APP_ID,
-            privateKeyLocation: process.env.GITHU_PRIVATE_KEY_LOCATION
+            privateKeyLocation: process.env.GITHU_PRIVATE_KEY_LOCATION,
         },
     },
     env: process.env.NODE_ENV || "dev",

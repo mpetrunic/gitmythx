@@ -1,0 +1,20 @@
+extends Layout/main
+
+block content
+    div.pading-20
+    div.col-md-4.col-md-offset-4
+        form.form-horizontal(action='', method='post')
+            fieldset
+                div
+                    legend Login
+                div.control-group
+                    label.control-label(for='address') Ethereum address
+                    div.controls
+                        input.form-control(type='text', id='address', name='address', placeholder='0x12323423...')
+                div.control-group
+                    label.control-label(for='password') Ethereum address
+                    div.controls
+                        input.form-control(type='password', id='password', name='password', placeholder='supersecret')
+                div.control-group
+                    div.controls(style='margin-top: 10px;')
+                        button.btn.btn-lg.btn-block.btn-success Login
