@@ -21,7 +21,7 @@
     "coverage": "nyc --reporter=text --all --include \"src/**/*.js\" npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint src/**/*.ts",
-    "start": "npm run compile && (node --inspect=0.0.0.0:56745 -r dotenv/config src/index.js || exit 1)",
+    "start": "npm run compile && node --inspect=0.0.0.0:56745 -r dotenv/config src/index.js",
     "dev": "./node_modules/nodemon/bin/nodemon.js"
   },
   "dependencies": {

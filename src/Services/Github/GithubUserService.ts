@@ -2,7 +2,24 @@ import Octokit from "@octokit/rest";
 import config from "../../Config/Config";
 import logger from "../Logger";
 
+// tslint:disable-next-line:interface-name
+export interface GithubUser {
+    login: string;
+    id: number;
+    avatar_url: string;
+}
+
 export class GithubUserService {
+
+    private client: Octokit;
+
+    constructor(token?: string) {
+        if (token) {
+            this.client = new Octokit({
+                auth: token,
+            });
+        }
+    }
 
     public async getUserAccessCode(code: string): Promise<string> {
         const client = new Octokit();
@@ -25,8 +42,8 @@ export class GithubUserService {
 
     }
 
-    public async hasValidAccessToken(token: string): Promise<boolean> {
-        if (!token) { return false; }
-        return true;
+    public async getUserDetails(): Promise<GithubUser> {
+        if (!this.client) { return null; }
+        return (await this.client.users.getAuthenticated()).data;
     }
 }
