@@ -40,6 +40,7 @@ class Database {
                     this.sequelize.getQueryInterface(),
                     Sequelize,
                 ],
+                pattern: /^\d+[\w-]+\.js$/,
                 path: path.join(__dirname, "../Migrations"),
             },
         });

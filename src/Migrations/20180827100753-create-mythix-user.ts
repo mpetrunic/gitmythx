@@ -1,14 +1,19 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable("Examples", {
+    return queryInterface.createTable("Users", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
-      },
-      help: {
         type: Sequelize.STRING,
+        comment: "Github user id",
+      },
+      accessToken: {
+        allowNull: true,
+        type: Sequelize.TEXT,
+      },
+      refreshToken: {
+        allowNull: true,
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
@@ -23,6 +28,6 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable("Examples");
+    return queryInterface.dropTable("Users");
   },
 };

@@ -1,6 +1,7 @@
 import * as armlet from "armlet";
 import * as express from "express";
 import config from "../Config/Config";
+import User from "../Models/User";
 import {GithubUserService} from "../Services/Github/GithubUserService";
 
 const router = express.Router();
@@ -11,8 +12,16 @@ router.get("/setup", async (req, res) => {
             `https://github.com/login/oauth/authorize?client_id=${config.github.client.id}`,
         );
     }
+    let mythxUser = await User.findOne({ where: { id: req.githubUser.id.toString() }});
+    if (!mythxUser) {
+        mythxUser = {
+            accessToken: "Undefined",
+            refreshToken: "Undefined",
+        } as any;
+    }
     res.render("setup", {
         githubUser: req.githubUser,
+        mythxUser,
     });
 });
 
@@ -25,10 +34,13 @@ router.post("/mythx/login", async (req, res) => {
         password,
     });
     await client.login();
-    res.json({
-        a: client.accessToken,
-        b: client.refreshToken,
-    });
+    const user = await User.findOne({ where: { id: req.githubUser.id.toString() }});
+    user ?
+        await user.update({ accessToken: client.accessToken, refreshToken: client.refreshToken })
+        : await User.create(
+            { id: req.githubUser.id.toString(), accessToken: client.accessToken, refreshToken: client.refreshToken },
+            );
+    res.redirect("/setup");
 });
 
 router.get("/oauth/github", async (req, res) => {
