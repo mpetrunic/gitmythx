@@ -1,12 +1,14 @@
+import * as bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-import {Express, Request, Response, Router} from "express";
 import express = require("express");
+import {Express, Request, Response, Router} from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import * as path from "path";
 import api from "./Routes/Api";
 import github from "./Routes/GithubWebhook";
 import views from "./Routes/Views";
+import {githubUserMiddleware} from "./Services/GithubUserMiddleware";
 import {morganLogger} from "./Services/Logger";
 
 class App {
@@ -18,7 +20,10 @@ class App {
         // add before route middleware's here
         this.server.use(morgan("short", { stream: morganLogger }));
         this.server.use(helmet());
+        this.server.use(bodyParser.json());
+        this.server.use(bodyParser.urlencoded({ extended: true }));
         this.server.use(cookieParser());
+        this.server.use(githubUserMiddleware);
         this.server.set("view engine", "pug");
         this.server.set("views", path.join(__dirname, "/Public/Views"));
         this.server.use(express.static(__dirname + "/Public"));

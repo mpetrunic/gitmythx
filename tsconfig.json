@@ -4,14 +4,11 @@
     "module": "commonjs",
     "sourceMap": true,
     "moduleResolution": "node",
-    //"allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true
   },
-  "files": [
-    "./node_modules/@types/node/index.d.ts"
-  ],
   "include": [
     "src/**/*.ts",
     "test/**/*.ts"
