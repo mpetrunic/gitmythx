@@ -1,9 +1,11 @@
 import Octokit from "@octokit/rest";
+import config from "../../Config/Config";
+import CheckRunReport from "../../Models/CheckRunReport";
 import {GitRepo} from "../GitRepo";
 import logger from "../Logger";
 import {Analysis} from "../MythX/Analysis";
 import githubAppInstallationService from "./GithubAppInstallationService";
-import {CheckRunConclusion, CheckRunStatus, GithubEvent} from "./types";
+import {CheckRunConclusion, CheckRunOutput, CheckRunStatus, GithubEvent} from "./types";
 
 export default class GithubAppService {
 
@@ -44,11 +46,41 @@ export default class GithubAppService {
             logger.info(`Cloning ${payload.repository.full_name}#${payload.check_run.head_sha}`);
             await repo.clone();
             const analysis = new Analysis(repo);
-            await analysis.run();
-            await this.setCheckCompletedStatus(payload, CheckRunConclusion.SUCCESS);
+            const reports = await analysis.run();
+            if (reports instanceof Array) {
+                let success = true;
+                reports.forEach(async (report) => {
+                    if (report.success) {
+                        if (report.issues.length > 0) { success = false; }
+                        await CheckRunReport.create({
+                            checkRunId:  payload.check_run.id.toString(),
+                            analysisUuid: report.uuid,
+                            report: JSON.stringify(report.issues),
+                        });
+                    }
+                });
+                if (success) {
+                    await this.setCheckCompletedStatus(payload, CheckRunConclusion.SUCCESS);
+                } else {
+                    await this.setCheckCompletedStatus(
+                        payload,
+                        CheckRunConclusion.FAILURE, {
+                            title: "Some contracts failed Mythx security check",
+                            summary: "Check status link for issue details",
+                        },
+                    );
+                }
+            }
+
         } catch (e) {
             logger.error(e.message);
-            await this.setCheckCompletedStatus(payload, CheckRunConclusion.FAILURE);
+            await this.setCheckCompletedStatus(
+                payload,
+                CheckRunConclusion.FAILURE, {
+                    title: "Error unrelated to mythx check",
+                    summary: e.message,
+                },
+            );
         }
         return true;
     }
@@ -73,7 +105,8 @@ export default class GithubAppService {
         });
     }
 
-    private setCheckCompletedStatus(event: GithubEvent, conclusion: CheckRunConclusion) {
+    private setCheckCompletedStatus(event: GithubEvent, conclusion: CheckRunConclusion, output?: CheckRunOutput) {
+        logger.info(`Status url: ${config.app.hostname + "/github/check/status/" + event.check_run.id}`);
         return this.client.checks.update({
             owner: event.repository.owner.login,
             repo: event.repository.name,
@@ -81,8 +114,9 @@ export default class GithubAppService {
             check_run_id: event.check_run.id,
             status: CheckRunStatus.COMPLETED,
             conclusion,
+            output,
             completed_at: new Date().toISOString(),
-            details_url: "https://gitmithx.com",
+            details_url: config.app.hostname + "/github/check/status/" + event.check_run.id,
         });
     }
 }

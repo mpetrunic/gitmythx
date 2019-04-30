@@ -18,6 +18,11 @@ export enum CheckRunConclusion {
     FAILURE = "failure",
 }
 
+export interface CheckRunOutput {
+    title: string;
+    summary: string;
+}
+
 interface App {
     id: number;
 }

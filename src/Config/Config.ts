@@ -5,7 +5,8 @@ const env = process.env;
  */
 const config = Object.freeze({
     app: {
-        githubAuthUrl: process.env.HOSTNAME + "/oauth/github",
+        hostname: process.env.APP_HOSTNAME,
+        githubAuthUrl: process.env.APP_HOSTNAME + "/oauth/github",
     },
     db: {
         database: process.env.DB_NAME || "nodefactory",
