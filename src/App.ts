@@ -9,6 +9,7 @@ import api from "./Routes/Api";
 import github from "./Routes/GithubWebhook";
 import views from "./Routes/Views";
 import {githubUserMiddleware} from "./Services/GithubUserMiddleware";
+import severity from "./Services/Helpers/SeverityClasses";
 import {morganLogger} from "./Services/Logger";
 
 class App {
@@ -27,6 +28,7 @@ class App {
         this.server.set("view engine", "pug");
         this.server.set("views", path.join(__dirname, "/Public/Views"));
         this.server.use(express.static(__dirname + "/Public"));
+        this.server.locals.severity = severity;
         this.addRoutes();
         // add after route middleware's here
     }

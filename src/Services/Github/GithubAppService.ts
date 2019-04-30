@@ -55,7 +55,7 @@ export default class GithubAppService {
                         await CheckRunReport.create({
                             checkRunId:  payload.check_run.id.toString(),
                             analysisUuid: report.uuid,
-                            report: JSON.stringify(report.issues),
+                            report: JSON.stringify(report),
                         });
                     }
                 });
