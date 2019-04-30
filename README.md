@@ -4,6 +4,12 @@
 
 Repo containing github app for running MythX security checks.
 
+## Example
+- example repo: https://github.com/mpetrunic/GitMythx-example
+    - commit check - success - https://github.com/mpetrunic/GitMythx-example/commits/master
+    - PR check - failed - https://github.com/mpetrunic/GitMythx-example/pull/1
+        - issue viewer for PR: https://gitmythx.nodefactory.io/github/check/status/115227721
+
 ## Usage
 
 - Install [GitMythX](https://github.com/apps/gitmythx) to your smart contract repo
