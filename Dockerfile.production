@@ -4,6 +4,11 @@ RUN yarn run build
 
 FROM node:carbon-alpine
 
+RUN apk add --update  git build-base libgit2-dev && \
+  rm -rf /tmp/* /var/cache/apk/*
+
+RUN ln -s /usr/lib/libcurl.so.4 /usr/lib/libcurl-gnutls.so.4
+
 WORKDIR /app
 
 COPY --from=0 /usr/app/dist/src /app

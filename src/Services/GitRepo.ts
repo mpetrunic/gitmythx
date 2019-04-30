@@ -1,11 +1,9 @@
-import {file} from "babel-types";
 import * as fs from "fs";
-import {Clone, Repository} from "nodegit";
+import {Clone, Repository, Reset} from "nodegit";
 import os from "os";
 import path from "path";
 import rimraf from "rimraf";
 import {IGitMythXConfig} from "./GitMythXConfig";
-import logger from "./Logger";
 
 export class GitRepo {
 
@@ -31,8 +29,7 @@ export class GitRepo {
                 checkoutBranch: this.branch,
             },
         );
-        const commit = await this.repo.getCommit(this.ref);
-        await this.repo.setHeadDetached(commit.id());
+        await Reset.reset(this.repo, await this.repo.getCommit(this.ref), Reset.TYPE.HARD, {});
         return this;
     }
 
