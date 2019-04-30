@@ -1,4 +1,7 @@
 import Octokit from "@octokit/rest";
+import {GitRepo} from "../GitRepo";
+import logger from "../Logger";
+import {Analysis} from "../MythX/Analysis";
 import githubAppInstallationService from "./GithubAppInstallationService";
 import {CheckRunConclusion, CheckRunStatus, GithubEvent} from "./types";
 
@@ -19,11 +22,34 @@ export default class GithubAppService {
     }
 
     public async initiateCheckRun(payload: GithubEvent): Promise<boolean> {
+        logger.info(
+            `Seting check run status to "started" for
+            checkrun ${payload.check_run.id} (${payload.repository.full_name})`,
+        );
         await this.setCheckStartedStatus(payload);
-
-        // TODO: run analisys
-
-        await this.setCheckCompletedStatus(payload, CheckRunConclusion.SUCCESS);
+        try {
+            logger.info("Fetching installation token...");
+            const installationToken = await githubAppInstallationService.getInstallationToken(
+                payload.repository.owner.login,
+                payload.repository.name,
+            );
+            const repo = new GitRepo(
+                payload.repository.owner.id,
+                payload.repository.full_name,
+                payload.repository.name,
+                payload.check_run.head_branch,
+                payload.check_run.head_sha,
+                installationToken,
+            );
+            logger.info(`Cloning ${payload.repository.full_name}#${payload.check_run.head_sha}`);
+            await repo.clone();
+            const analysis = new Analysis(repo);
+            await analysis.run();
+            await this.setCheckCompletedStatus(payload, CheckRunConclusion.SUCCESS);
+        } catch (e) {
+            logger.error(e.message);
+            await this.setCheckCompletedStatus(payload, CheckRunConclusion.FAILURE);
+        }
         return true;
     }
 

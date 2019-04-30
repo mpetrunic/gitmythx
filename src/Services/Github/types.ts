@@ -38,6 +38,7 @@ interface CheckRun extends Check {
 }
 
 interface Owner {
+    id: number;
     login: string;
 }
 
