@@ -6,19 +6,22 @@ block content
 
     each report in analysis
         div.row
-            h3 #{report.contractFilePath} Issues
-            div.row
-                table.table.table-bordered
-                    tr
-                        th swcID
-                        th swcTitle
-                        th Severity
-                        th Location
-                        th Description
-                    each issue in report.issues
-                        tr(class=severity.getSeverityClass(issue.severity))
-                            td #{issue.swcID}
-                            td #{issue.swcTitle}
-                            td #{issue.severity}
-                            td #{issue.location}
-                            td #{issue.description}
+            if !report.success
+                p.bg-danger #{report.message}
+            else
+                h3 #{report.contractFilePath} Issues
+                div.row
+                    table.table.table-bordered
+                        tr
+                            th swcID
+                            th swcTitle
+                            th Severity
+                            th Location
+                            th Description
+                        each issue in report.issues
+                            tr(class=severity.getSeverityClass(issue.severity))
+                                td #{issue.swcID}
+                                td #{issue.swcTitle}
+                                td #{issue.severity}
+                                td #{issue.location}
+                                td #{issue.description}

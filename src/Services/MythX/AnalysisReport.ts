@@ -1,4 +1,5 @@
 import SourceMappingDecoder = require("remix-lib/src/sourceMappingDecoder");
+import logger from "../Logger";
 
 export class AnalysisReport {
 
@@ -16,13 +17,21 @@ export class AnalysisReport {
         mythxRequest?: any,
         mythxResult?: any) {
         this.decoder = new SourceMappingDecoder();
-        this.contractFilePath = mythxRequest.mainSource;
         if (mythxResult && mythxRequest) {
+            this.contractFilePath = mythxRequest.mainSource;
             this.uuid = mythxResult.status.uuid;
             this.issues = mythxResult.issues
                 .map((issue) => this.convertMythxIssue(issue, mythxRequest))
                 .reduce((curr, arr) => curr.concat(arr), []);
         }
+    }
+
+    public isFatal(): boolean {
+        let severeCount = 0;
+        this.issues.forEach((issue) => {
+            if (issue.severity !== "Low") { severeCount++; }
+        });
+        return severeCount > 0;
     }
 
     private convertMythxIssue(report: any, mythxRequest: any): IMythxIssue[] {
@@ -50,7 +59,7 @@ export class AnalysisReport {
                 }
                 return mythxIssue;
             } catch (e) {
-                console.log(e);
+                logger.error(e.message);
             }
 
         });

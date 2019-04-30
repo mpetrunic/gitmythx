@@ -47,29 +47,43 @@ export default class GithubAppService {
             await repo.clone();
             const analysis = new Analysis(repo);
             const reports = await analysis.run();
+            let success = true;
             if (reports instanceof Array) {
-                let success = true;
-                reports.forEach(async (report) => {
+                reports.forEach( (report) => {
                     if (report.success) {
-                        if (report.issues.length > 0) { success = false; }
-                        await CheckRunReport.create({
+                        if (report.isFatal()) { success = false; }
+                        CheckRunReport.create({
                             checkRunId:  payload.check_run.id.toString(),
                             analysisUuid: report.uuid,
                             report: JSON.stringify(report),
                         });
+                    } else {
+                        CheckRunReport.create({
+                            checkRunId:  payload.check_run.id.toString(),
+                            analysisUuid: "undefined",
+                            report: JSON.stringify(report),
+                        });
+                        success = false;
                     }
                 });
-                if (success) {
-                    await this.setCheckCompletedStatus(payload, CheckRunConclusion.SUCCESS);
-                } else {
-                    await this.setCheckCompletedStatus(
-                        payload,
-                        CheckRunConclusion.FAILURE, {
-                            title: "Some contracts failed Mythx security check",
-                            summary: "Check status link for issue details",
-                        },
-                    );
-                }
+            } else {
+                success = false;
+                CheckRunReport.create({
+                    checkRunId:  payload.check_run.id.toString(),
+                    analysisUuid: "undefined",
+                    report: JSON.stringify(reports),
+                });
+            }
+            if (success) {
+                await this.setCheckCompletedStatus(payload, CheckRunConclusion.SUCCESS);
+            } else {
+                await this.setCheckCompletedStatus(
+                    payload,
+                    CheckRunConclusion.FAILURE, {
+                        title: "Some contracts failed Mythx security check",
+                        summary: "Check status link for issue details",
+                    },
+                );
             }
 
         } catch (e) {
@@ -106,7 +120,6 @@ export default class GithubAppService {
     }
 
     private setCheckCompletedStatus(event: GithubEvent, conclusion: CheckRunConclusion, output?: CheckRunOutput) {
-        logger.info(`Status url: ${config.app.hostname + "/github/check/status/" + event.check_run.id}`);
         return this.client.checks.update({
             owner: event.repository.owner.login,
             repo: event.repository.name,
